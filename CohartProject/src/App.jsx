@@ -1,21 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from "react";
+import CreateTodd from "./components/CreateTodd";
+import Todo from "./components/Todo";
 
-import './App.css'
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+ 
+  const [todos, setTodos] = useState([]);
+useEffect(()=>{
+  fetch("http://localhost:3000/todos").then(async (res) => {
+    const info = await res.json();
+  
+    setTodos(info.todos);
+  });
+},[])
+  
   return (
     <>
-      
-      
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        </div>
+        <CreateTodd />
+
+        <Todo todos={todos} />
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
